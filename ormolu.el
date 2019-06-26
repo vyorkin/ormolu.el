@@ -28,6 +28,8 @@
 
 ;;; Code:
 
+;; Customization properties
+
 (defgroup ormolu nil
   "Integration with the \"ormolu\" formatting program."
   :prefix "ormolu-"
@@ -51,7 +53,7 @@
   :type 'boolean
   :safe #'booleanp)
 
-;; Minor mode:
+;; Minor mode
 
 (defvar ormolu-mode-map (make-sparse-keymap)
   "Local keymap used for `ormolu-mode`.")
@@ -77,7 +79,7 @@ Provide the following keybindings:
   (when ormolu-reformat-buffer-on-save
     (ormolu-format-buffer)))
 
-;; Interactive functions:
+;; Interactive functions
 
 (defun ormolu--format-call (buf)
   "Format BUF using \"ormolu\"."
@@ -111,4 +113,4 @@ Provide the following keybindings:
 
 (provide 'ormolu)
 
-;;; name.el ends here
+;;; ormolu.el ends here
