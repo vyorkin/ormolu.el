@@ -33,8 +33,7 @@
   :prefix "ormolu-"
   :group 'haskell)
 
-(defcustom ormolu-process-path
-  "ormolu"
+(defcustom ormolu-process-path "ormolu"
   "Location where the ormolu executable is located."
   :group 'ormolu
   :type 'string
@@ -85,13 +84,21 @@ Provide the following keybindings:
   (with-current-buffer (get-buffer-create "*ormolu*")
     (erase-buffer)
     (insert-buffer-substring buf)
-    (if (zerop (append (list (point-min) (point-max) ormolu-process-path t t nil) ormolu-extra-args))
-        (progn
-          (if (not (string= (buffer-string) (with-current-buffer buf (buffer-string))))
-              (copy-to-buffer buf (point-min) (point-max)))
-          (kill-buffer))
-      (error "ormolu failed, see *ormolu* buffer for details"))))
-
+    (let ((ret (apply #'call-process-region
+                      (append (list
+                               (point-min)
+                               (point-max)
+                               ormolu-process-path
+                               t
+                               t
+                               nil)
+                              ormolu-extra-args))))
+      (if (zerop ret)
+          (progn
+            (if (not (string= (buffer-string) (with-current-buffer buf (buffer-string))))
+                (copy-to-buffer buf (point-min) (point-max)))
+            (kill-buffer))
+        (error "ormolu failed, see *ormolu* buffer for details")))))
 
 ;;;###autoload
 (defun ormolu-format-buffer ()
