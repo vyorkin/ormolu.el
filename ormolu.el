@@ -2,9 +2,10 @@
 
 ;; Author: Vasiliy Yorkin <vasiliy.yorkin@gmail.com>
 ;; Maintainer: Vasiliy Yorkin
-;; Version: 0.1.0-snapshot
-;; Homepage: homepage
+;; Version: 0.2.0-snapshot
+;; URL: https://github.com/vyorkin/ormolu.el
 ;; Keywords: haskell, formatter, ormolu
+;; Package-Requires: ((reformatter "0.4"))
 
 ;; This file is NOT part of GNU Emacs
 
@@ -28,7 +29,7 @@
 
 ;;; Code:
 
-;; Customization properties
+(require 'reformatter)
 
 (defgroup ormolu nil
   "Integration with the \"ormolu\" formatting program."
@@ -42,74 +43,23 @@
   :safe #'stringp)
 
 (defcustom ormolu-extra-args nil
-  "Extra arguments to give to ormolu"
+  "Extra arguments to give to ormolu."
   :group 'ormolu
   :type 'sexp
   :safe #'listp)
 
-(defcustom ormolu-reformat-buffer-on-save nil
-  "Set to t to run `ormolu-format-buffer` when a buffer in `:mode` is saved."
-  :group 'ormolu
-  :type 'boolean
-  :safe #'booleanp)
-
-;; Minor mode
-
 (defvar ormolu-mode-map (make-sparse-keymap)
-  "Local keymap used for `ormolu-mode`.")
+  "Local keymap used for `ormolu-format-on-save-mode`.")
 
-;;;###autoload
-(define-minor-mode ormolu-mode
-  "Minor mode to format code with the \"ormolu\" program.
-
-Provide the following keybindings:
-
-\\{ormolu-mode-map}"
-  :init-value nil
-  :keymap ormolu-mode-map
-  :lighter " Or"
+;;;###autoload (autoload 'ormolu-format-buffer "ormolu" nil t)
+;;;###autoload (autoload 'ormolu-format-region "ormolu" nil t)
+;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
+(reformatter-define ormolu-format
+  :program ormolu-process-path
+  :args ormolu-extra-args
   :group 'ormolu
-  :require 'ormolu
-  (if ormolu-mode
-      (add-hook 'before-save-hook 'ormolu--before-save nil t)
-    (remove-hook 'before-save-hook 'ormolu--before-save t)))
-
-(defun ormolu--before-save ()
-  "Optionally reformat the buffer on save."
-  (when ormolu-reformat-buffer-on-save
-    (ormolu-format-buffer)))
-
-;; Interactive functions
-
-(defun ormolu--format-call (buf)
-  "Format BUF using \"ormolu\"."
-  (with-current-buffer (get-buffer-create "*ormolu*")
-    (erase-buffer)
-    (insert-buffer-substring buf)
-    (let ((ret (apply #'call-process-region
-                      (append (list
-                               (point-min)
-                               (point-max)
-                               ormolu-process-path
-                               t
-                               t
-                               nil)
-                              (cons "/dev/stdin" ormolu-extra-args)))))
-      (if (zerop ret)
-          (progn
-            (if (not (string= (buffer-string) (with-current-buffer buf (buffer-string))))
-                (copy-to-buffer buf (point-min) (point-max)))
-            (kill-buffer))
-        (error "ormolu failed, see *ormolu* buffer for details")))))
-
-;;;###autoload
-(defun ormolu-format-buffer ()
-  "Format the current buffer using \"ormolu\"."
-  (interactive)
-  (unless (executable-find ormolu-process-path)
-    (error "Could not locate executable \"%s\"" ormolu-process-path))
-  (ormolu--format-call (current-buffer))
-  (message "Formatted buffer with \"ormolu\"."))
+  :lighter " Or"
+  :keymap ormolu-mode-map)
 
 (provide 'ormolu)
 

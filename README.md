@@ -12,9 +12,7 @@ With [use-package](https://github.com/jwiegley/use-package/) + [quelpa](https://
  (ormolu
   :fetcher github
   :repo "vyorkin/ormolu.el")
- :hook (haskell-mode . ormolu-mode)
- :custom
- (ormolu-reformat-buffer-on-save t)
+ :hook (haskell-mode . ormolu-format-on-save-mode)
  :config
  (nmap 'haskell-mode-map
    "C-c r" 'ormolu-format-buffer))
