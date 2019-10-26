@@ -15,7 +15,7 @@ With [use-package](https://github.com/jwiegley/use-package/) + [quelpa](https://
  :hook (haskell-mode . ormolu-mode)
  :custom
  (ormolu-reformat-buffer-on-save t)
- :config
- (nmap 'haskell-mode-map
-   "C-c r" 'ormolu-format-buffer))
+ :bind
+ (:map haskell-mode-map
+   ("C-c r" . ormolu-format-buffer)))
 ```
