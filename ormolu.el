@@ -42,7 +42,7 @@
   :type 'string
   :safe #'stringp)
 
-(defcustom ormolu-extra-args nil
+(defcustom ormolu-extra-args '()
   "Extra arguments to give to ormolu."
   :group 'ormolu
   :type 'sexp
@@ -56,7 +56,7 @@
 ;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
 (reformatter-define ormolu-format
   :program ormolu-process-path
-  :args ormolu-extra-args
+  :args (append ormolu-extra-args '("/dev/stdin"))
   :group 'ormolu
   :lighter " Or"
   :keymap ormolu-mode-map)
