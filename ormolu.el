@@ -4,7 +4,7 @@
 ;; Maintainer: Vasiliy Yorkin
 ;; Version: 0.2.0-snapshot
 ;; URL: https://github.com/vyorkin/ormolu.el
-;; Keywords: haskell, formatter, ormolu
+;; Keywords: files, tools
 ;; Package-Requires: ((emacs "24") (reformatter "0.4"))
 
 ;; This file is NOT part of GNU Emacs
