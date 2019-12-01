@@ -1,6 +1,6 @@
 # ormolu.el
 
-Format Haskell source code using the [ormolu](https://github.com/tweag/ormolu).
+Format Haskell source code using [ormolu](https://github.com/tweag/ormolu).
 
 # Usage
 
