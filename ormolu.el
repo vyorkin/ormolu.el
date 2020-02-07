@@ -56,7 +56,7 @@
 ;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
 (reformatter-define ormolu-format
   :program ormolu-process-path
-  :args (append '("/dev/stdin") ormolu-extra-args)
+  :args (append ormolu-extra-args (list "/dev/stdin"))
   :group 'ormolu
   :lighter " Or"
   :keymap ormolu-mode-map)
