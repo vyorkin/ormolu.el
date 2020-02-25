@@ -22,3 +22,7 @@ Without:
 (load-library "ormolu")
 (add-hook 'haskell-mode-hook 'ormolu-format-on-save-mode)
 ```
+
+## Additional configuration
+
+The package can be configured via the usual `customize-group RET ormolu` mechanism. For example, to enable the `TypeApplications` extension by default, you can put `("--ghc-opt" "-XTypeApplications")` under the "Ormolu Extra Args" option (`ormolu-extra-args` elisp var).
