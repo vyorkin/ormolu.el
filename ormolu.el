@@ -61,7 +61,7 @@
   :lighter " Or"
   :keymap ormolu-mode-map)
 
-(defun ormolu () (ormolu-format-buffer))
+(defalias 'ormolu 'ormolu-format-buffer)
 
 (provide 'ormolu)
 
