@@ -61,6 +61,8 @@
   :lighter " Or"
   :keymap ormolu-mode-map)
 
+(defun ormolu () (ormolu-format-buffer))
+
 (provide 'ormolu)
 
 ;;; ormolu.el ends here
