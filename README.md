@@ -9,7 +9,7 @@ With [use-package](https://github.com/jwiegley/use-package/):
 ```elisp
 (use-package ormolu
  :hook (haskell-mode . ormolu-format-on-save-mode)
- :config
+ :bind
  (:map haskell-mode-map
    ("C-c r" . ormolu-format-buffer)))
 ```
