@@ -26,3 +26,7 @@ Without:
 ## Additional configuration
 
 The package can be configured via the usual `customize-group RET ormolu` mechanism. For example, to enable the `TypeApplications` extension by default, you can put `("--ghc-opt" "-XTypeApplications")` under the "Ormolu Extra Args" option (`ormolu-extra-args` elisp var).
+
+## Notes
+
+This package is just a tiny wrapper on top of the `reformatter.el`, I mean **really tiny**, just a few lines of code.
