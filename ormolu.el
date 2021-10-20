@@ -48,6 +48,12 @@
   :type 'sexp
   :safe #'listp)
 
+(defcustom ormolu-cabal-default-extensions nil
+  "Whether to use the --cabal-default-extensions flag."
+  :group 'ormolu
+  :type 'boolean
+  :safe #'booleanp)
+
 (defvar ormolu-mode-map (make-sparse-keymap)
   "Local keymap used for `ormolu-format-on-save-mode`.")
 
@@ -56,7 +62,9 @@
 ;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
 (reformatter-define ormolu-format
   :program ormolu-process-path
-  :args ormolu-extra-args
+  :args (append (if (and ormolu-cabal-default-extensions buffer-file-name)
+                    `("--cabal-default-extensions" "--stdin-input-file" ,buffer-file-name)
+                  '()) ormolu-extra-args)
   :group 'ormolu
   :lighter " Or"
   :keymap ormolu-mode-map)
