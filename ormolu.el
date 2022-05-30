@@ -48,8 +48,8 @@
   :type 'sexp
   :safe #'listp)
 
-(defcustom ormolu-cabal-default-extensions nil
-  "Whether to use the --cabal-default-extensions flag."
+(defcustom ormolu-no-cabal nil
+  "Whether to use the --no-cabal flag."
   :group 'ormolu
   :type 'boolean
   :safe #'booleanp)
@@ -62,9 +62,9 @@
 ;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
 (reformatter-define ormolu-format
   :program ormolu-process-path
-  :args (append (if (and ormolu-cabal-default-extensions buffer-file-name)
-                    `("--cabal-default-extensions" "--stdin-input-file" ,buffer-file-name)
-                  '()) ormolu-extra-args)
+  :args (append (if (and (not ormolu-no-cabal) buffer-file-name)
+                    `("--stdin-input-file" ,buffer-file-name)
+                  '("--no-cabal")) ormolu-extra-args)
   :group 'ormolu
   :lighter " Or"
   :keymap ormolu-mode-map)
